@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Payment Confirmation</h1>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>Confirm Your Payment</h2>
+            </div>
+            <div class="card-body">
+                <div class="reservation-details" th:if="${reservation != null}">
+                    <h3>Reservation Details</h3>
+                    <p><strong>Passenger:</strong> <span th:text="${reservation.firstName + ' ' + reservation.lastName}">John Doe</span></p>
+                    <p><strong>Class:</strong> <span th:text="${reservation.classType}">Economy</span></p>
+                    <p><strong>Date:</strong> <span th:text="${#temporals.format(reservation.date, 'dd-MM-yyyy')}">01-01-2023</span></p>
+                    <p><strong>Time:</strong> <span th:text="${#temporals.format(reservation.time, 'HH:mm')}">12:00</span></p>
+                </div>
+                
+                <div class="payment-info">
+                    <h3>Payment Information</h3>
+                    <p><strong>Amount:</strong> $<span th:text="${payment.amount}">100.00</span></p>
+                    <p><strong>Date:</strong> <span th:text="${#temporals.format(payment.date, 'dd-MM-yyyy')}">01-01-2023</span></p>
+                </div>
+                
+                <form th:action="@{/payment(resId=${param.resId})}" th:object="${payment}" method="post">
+                    <!-- Hidden fields to preserve payment data -->
+                    <input type="hidden" th:field="*{amount}" />
+                    <input type="hidden" th:field="*{date}" />
+                    <input type="hidden" th:field="*{reservationId}" />
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Credit Card Details</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="cardHolderName">Card Holder Name</label>
+                                <input type="text" id="cardHolderName" th:field="*{cardHolderName}" 
+                                    th:classappend="${#fields.hasErrors('cardHolderName')} ? 'is-invalid' : ''">
+                                <div class="error-message" th:if="${#fields.hasErrors('cardHolderName')}" th:errors="*{cardHolderName}">
+                                    Card holder name is required.
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number</label>
+                                <input type="text" id="cardNumber" th:field="*{cardNumber}" placeholder="1234567890123456" 
+                                    th:classappend="${#fields.hasErrors('cardNumber')} ? 'is-invalid' : ''">
+                                <div class="error-message" th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}">
+                                    Card number must be exactly 16 digits.
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="form-group" style="width: 48%; float: left; margin-right: 2%;">
+                                    <label for="expiryDate">Expiry Date (MM/YY)</label>
+                                    <input type="text" id="expiryDate" th:field="*{expiryDate}" placeholder="MM/YY" 
+                                        th:classappend="${#fields.hasErrors('expiryDate')} ? 'is-invalid' : ''">
+                                    <div class="error-message" th:if="${#fields.hasErrors('expiryDate')}" th:errors="*{expiryDate}">
+                                        Expiry date must be in MM/YY format.
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group" style="width: 48%; float: left;">
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" th:field="*{cvv}" placeholder="123" 
+                                        th:classappend="${#fields.hasErrors('cvv')} ? 'is-invalid' : ''">
+                                    <div class="error-message" th:if="${#fields.hasErrors('cvv')}" th:errors="*{cvv}">
+                                        CVV must be exactly 3 digits.
+                                    </div>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary">Confirm Payment</button>
+                        <a th:href="@{/}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

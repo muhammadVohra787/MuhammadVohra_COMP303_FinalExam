@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Summary</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Airline Ticket Summary</h1>
+        </div>
+        
+        <!-- Error message display -->
+        <div th:if="${error}" class="alert" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; margin-bottom: 20px;">
+            <strong>Error:</strong> <span th:text="${error}">An error occurred</span>
+        </div>
+        
+        <div class="card card-success">
+            <div class="card-header">
+                <h2>Booking Confirmation</h2>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <h3>Success!</h3>
+                    <p>Your ticket has been booked successfully. Please find the details below.</p>
+                </div>
+                
+                <!-- Ticket Information -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Ticket Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Ticket Number:</strong> <span th:text="${ticket.number}">TKT123456</span></p>
+                        <p><strong>Price:</strong> $<span th:text="${ticket.price}">150.00</span></p>
+                        <p><strong>Details:</strong> <span th:text="${ticket.details}">Flight details</span></p>
+                    </div>
+                </div>
+                
+                <!-- Reservation Information -->
+                <div class="card card-info" th:if="${reservation != null}">
+                    <div class="card-header">
+                        <h3>Reservation Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Passenger Name:</strong> <span th:text="${reservation.firstName + ' ' + reservation.lastName}">John Doe</span></p>
+                        <p><strong>Phone Number:</strong> <span th:text="${reservation.phoneNumber}">1234567890</span></p>
+                        <p><strong>Number of Passengers:</strong> <span th:text="${reservation.numPassengers}">1</span></p>
+                        <p><strong>Class Type:</strong> <span th:text="${reservation.classType}">Economy</span></p>
+                        <p><strong>Date:</strong> <span th:text="${#temporals.format(reservation.date, 'dd-MM-yyyy')}">01-01-2023</span></p>
+                        <p><strong>Time:</strong> <span th:text="${#temporals.format(reservation.time, 'HH:mm')}">12:00</span></p>
+                        <p th:if="${reservation.details != null && !reservation.details.isEmpty()}">
+                            <strong>Additional Details:</strong> <span th:text="${reservation.details}">Additional details</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Payment Information -->
+                <div class="card card-warning" th:if="${payment != null}">
+                    <div class="card-header">
+                        <h3>Payment Information</h3>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Amount Paid:</strong> $<span th:text="${payment.amount}">150.00</span></p>
+                        <p><strong>Payment Date:</strong> <span th:text="${#temporals.format(payment.date, 'dd-MM-yyyy')}">01-01-2023</span></p>
+                    </div>
+                </div>
+                
+                <!-- Edit Personal Information -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Options</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group" style="display: flex; gap: 10px;">
+                            <a th:href="@{/reservation/edit/{id}(id=${reservation.id})}" class="btn btn-primary">Update Ticket</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 20px;">
+                    <a th:href="@{/}" class="btn btn-primary">Back to Home</a>
+                    <a th:href="@{/reservation}" class="btn btn-success">Book Another Ticket</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

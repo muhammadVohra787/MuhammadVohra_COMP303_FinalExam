@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Ticket Reservation System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Airline Ticket Reservation System</h1>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2>Active Reservations</h2>
+                <h4>MuhammadVohra-FinalExam-301257640-COMP303</h4>
+            </div>
+            <div class="card-body">
+                <div th:if="${reservations.empty}" class="alert">
+                    <p>No reservations found. Create a new reservation to get started.</p>
+                </div>
+                
+                <div th:if="${!reservations.empty}" class="reservation-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Class Type</th>
+                                <th>Date</th>
+                                <th>Ticket Number</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="reservation : ${reservations}">
+                                <td th:text="${reservation.firstName + ' ' + reservation.lastName}">John Doe</td>
+                                <td th:text="${reservation.classType}">Economy</td>
+                                <td th:text="${#temporals.format(reservation.date, 'dd-MM-yyyy')}">01-01-2023</td>
+                                <td th:text="${reservation.ticketNumber != null ? reservation.ticketNumber : 'Not issued'}">Not issued</td>
+                                <td>
+                                    <div class="reservation-controls">
+                                        <a th:if="${reservation.ticketNumber != null}" 
+                                           th:href="@{/ticket-summary(resId=${reservation.id})}" 
+                                           class="btn btn-secondary">View Ticket</a>
+
+                                        <a th:if="${reservation.ticketNumber == null}" 
+                                        th:href="@{/payment(resId=${reservation.id})}" 
+                                        class="btn btn-secondary">Pay</a>   
+                                           
+                                        <a
+                                         th:href="@{/reservation/edit/{id}(id=${reservation.id})}" 
+                                           class="btn btn-primary">Edit</a>
+                                           
+                                        <form th:action="@{/reservation/delete/{id}(id=${reservation.id})}" method="post">
+                                            <button type="submit" style="height:47px" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="card-footer">
+                    <a href="/reservation" class="btn btn-primary">Create New Reservation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,358 @@
+==============================================================================
+AIRLINE RESERVATION SYSTEM API DOCUMENTATION
+==============================================================================
+
+This document provides comprehensive details about the REST API endpoints
+available in the Airline Reservation System. Each section covers one entity
+with its respective endpoints.
+
+==============================================================================
+RESERVATION ENDPOINTS
+==============================================================================
+
+1. Get All Reservations
+   URL: /api/reservations
+   Method: GET
+   Description: Retrieves a list of all reservations in the system
+   Response: Array of Reservation objects
+   Sample Response:
+   [
+     {
+       "id": "67fe7179d5c9775fb64b64cd",
+       "firstName": "John",
+       "lastName": "Doe",
+       "numPassengers": 2,
+       "classType": "Business",
+       "phoneNumber": "1234567890",
+       "time": "10:30:00",
+       "date": "2025-05-15",
+       "ticketNumber": "TKT123456",
+       "details": "Window seat preferred"
+     },
+     {
+       "id": "67fe7179d5c9775fb64b64cf",
+       "firstName": "Jane",
+       "lastName": "Smith",
+       "numPassengers": 1,
+       "classType": "Economy",
+       "phoneNumber": "9876543210",
+       "time": "14:45:00",
+       "date": "2025-05-20",
+       "ticketNumber": null,
+       "details": "No preferences"
+     }
+   ]
+
+2. Get Reservation by ID
+   URL: /api/reservations/{id}
+   Method: GET
+   Description: Retrieves a specific reservation by its ID
+   Parameters: id - The unique identifier of the reservation
+   Response: Reservation object or error message
+   Sample URL: /api/reservations/67fe7179d5c9775fb64b64cd
+   Sample Response:
+   {
+     "id": "67fe7179d5c9775fb64b64cd",
+     "firstName": "John",
+     "lastName": "Doe",
+     "numPassengers": 2,
+     "classType": "Business",
+     "phoneNumber": "1234567890",
+     "time": "10:30:00",
+     "date": "2025-05-15",
+     "ticketNumber": "TKT123456",
+     "details": "Window seat preferred"
+   }
+
+3. Create New Reservation
+   URL: /api/reservations
+   Method: POST
+   Description: Creates a new reservation
+   Request Body: Reservation object (without ID)
+   Response: Newly created Reservation with ID and success message
+   Sample Request:
+   {
+     "firstName": "Michael",
+     "lastName": "Johnson",
+     "numPassengers": 3,
+     "classType": "First",
+     "phoneNumber": "5551234567",
+     "time": "08:15:00",
+     "date": "2025-06-10",
+     "details": "Aisle seat preferred"
+   }
+   Sample Response:
+   {
+     "success": true,
+     "message": "Reservation created successfully",
+     "reservation": {
+       "id": "67fe7179d5c9775fb64b64cg",
+       "firstName": "Michael",
+       "lastName": "Johnson",
+       "numPassengers": 3,
+       "classType": "First",
+       "phoneNumber": "5551234567",
+       "time": "08:15:00",
+       "date": "2025-06-10",
+       "ticketNumber": null,
+       "details": "Aisle seat preferred"
+     }
+   }
+
+4. Update Existing Reservation
+   URL: /api/reservations/{id}
+   Method: PUT
+   Description: Updates an existing reservation
+   Parameters: id - The unique identifier of the reservation to update
+   Request Body: Updated Reservation object
+   Response: Updated Reservation and success message
+   Sample URL: /api/reservations/67fe7179d5c9775fb64b64cd
+   Sample Request:
+   {
+     "firstName": "John",
+     "lastName": "Doe",
+     "numPassengers": 3,
+     "classType": "First",
+     "phoneNumber": "1234567890",
+     "time": "11:30:00",
+     "date": "2025-05-16",
+     "details": "Window seat and special meal"
+   }
+   Sample Response:
+   {
+     "success": true,
+     "message": "Reservation updated successfully",
+     "reservation": {
+       "id": "67fe7179d5c9775fb64b64cd",
+       "firstName": "John",
+       "lastName": "Doe",
+       "numPassengers": 3,
+       "classType": "First",
+       "phoneNumber": "1234567890",
+       "time": "11:30:00",
+       "date": "2025-05-16",
+       "ticketNumber": "TKT123456",
+       "details": "Window seat and special meal"
+     }
+   }
+
+5. Delete Reservation
+   URL: /api/reservations/{id}
+   Method: DELETE
+   Description: Deletes a reservation by its ID
+   Parameters: id - The unique identifier of the reservation to delete
+   Response: Success message
+   Sample URL: /api/reservations/67fe7179d5c9775fb64b64cd
+   Sample Response:
+   {
+     "success": true,
+     "message": "Reservation deleted successfully"
+   }
+
+==============================================================================
+TICKET ENDPOINTS
+==============================================================================
+
+1. Get All Tickets
+   URL: /api/tickets
+   Method: GET
+   Description: Retrieves a list of all tickets in the system
+   Response: Array of AirlineTicket objects
+   Sample Response:
+   [
+     {
+       "number": "TKT123456",
+       "price": 1200.0,
+       "details": "Flight details for John Doe",
+       "reservationId": "67fe7179d5c9775fb64b64cd",
+       "paymentId": "67fe7179d5c9775fb64b65cd"
+     },
+     {
+       "number": "TKT789012",
+       "price": 850.0,
+       "details": "Flight details for Jane Smith",
+       "reservationId": "67fe7179d5c9775fb64b64cf",
+       "paymentId": "67fe7179d5c9775fb64b65cf"
+     }
+   ]
+
+2. Get Ticket by ID
+   URL: /api/tickets/{id}
+   Method: GET
+   Description: Retrieves a specific ticket by its ID along with reservation information
+   Parameters: id - The unique identifier (number) of the ticket
+   Response: Ticket object with associated reservation or error message
+   Sample URL: /api/tickets/TKT123456
+   Sample Response:
+   {
+     "ticket": {
+       "number": "TKT123456",
+       "price": 1200.0,
+       "details": "Flight details for John Doe",
+       "reservationId": "67fe7179d5c9775fb64b64cd",
+       "paymentId": "67fe7179d5c9775fb64b65cd"
+     },
+     "reservation": {
+       "id": "67fe7179d5c9775fb64b64cd",
+       "firstName": "John",
+       "lastName": "Doe",
+       "numPassengers": 2,
+       "classType": "Business",
+       "phoneNumber": "1234567890",
+       "time": "10:30:00",
+       "date": "2025-05-15",
+       "ticketNumber": "TKT123456",
+       "details": "Window seat preferred"
+     }
+   }
+
+3. Get Full Ticket Summary
+   URL: /api/tickets/{id}/summary
+   Method: GET
+   Description: Retrieves comprehensive ticket information including ticket, reservation, payment details and a summary
+   Parameters: id - The unique identifier (number) of the ticket
+   Response: Complete ticket information with summary or error message
+   Sample URL: /api/tickets/TKT123456/summary
+   Sample Response:
+   {
+     "ticket": {
+       "number": "TKT123456",
+       "price": 1200.0,
+       "details": "Flight details for John Doe",
+       "reservationId": "67fe7179d5c9775fb64b64cd",
+       "paymentId": "67fe7179d5c9775fb64b65cd"
+     },
+     "reservation": {
+       "id": "67fe7179d5c9775fb64b64cd",
+       "firstName": "John",
+       "lastName": "Doe",
+       "numPassengers": 2,
+       "classType": "Business",
+       "phoneNumber": "1234567890",
+       "time": "10:30:00",
+       "date": "2025-05-15",
+       "ticketNumber": "TKT123456",
+       "details": "Window seat preferred"
+     },
+     "payment": {
+       "id": "67fe7179d5c9775fb64b65cd",
+       "amount": 1200.0,
+       "date": "2025-04-15",
+       "reservationId": "67fe7179d5c9775fb64b64cd"
+     },
+     "summary": {
+       "reservationId": "67fe7179d5c9775fb64b64cd",
+       "passengerName": "John Doe",
+       "ticketNumber": "TKT123456",
+       "classType": "Business",
+       "passengers": 2,
+       "price": 1200.0,
+       "reservationDate": "2025-05-15"
+     },
+     "success": true
+   }
+
+==============================================================================
+PAYMENT ENDPOINTS
+==============================================================================
+
+1. Get All Payments
+   URL: /api/payments
+   Method: GET
+   Description: Retrieves a list of all payments in the system (without sensitive credit card details)
+   Response: Array of PaymentDTO objects
+   Sample Response:
+   [
+     {
+       "id": "67fe7179d5c9775fb64b65cd",
+       "amount": 1200.0,
+       "date": "2025-04-15",
+       "reservationId": "67fe7179d5c9775fb64b64cd"
+     },
+     {
+       "id": "67fe7179d5c9775fb64b65cf",
+       "amount": 850.0,
+       "date": "2025-04-15",
+       "reservationId": "67fe7179d5c9775fb64b64cf"
+     }
+   ]
+
+2. Get Payment by ID
+   URL: /api/payments/{id}
+   Method: GET
+   Description: Retrieves a specific payment by its ID (without sensitive credit card details)
+   Parameters: id - The unique identifier of the payment
+   Response: PaymentDTO object or error message
+   Sample URL: /api/payments/67fe7179d5c9775fb64b65cd
+   Sample Response:
+   {
+     "id": "67fe7179d5c9775fb64b65cd",
+     "amount": 1200.0,
+     "date": "2025-04-15",
+     "reservationId": "67fe7179d5c9775fb64b64cd"
+   }
+
+3. Get Payment Information for a Reservation
+   URL: /api/payments/reservation/{reservationId}
+   Method: GET
+   Description: Retrieves payment information for a specific reservation (calculates payment amount)
+   Parameters: reservationId - The unique identifier of the reservation
+   Response: Payment information and reservation details or error message
+   Sample URL: /api/payments/reservation/67fe7179d5c9775fb64b64cd
+   Sample Response:
+   {
+     "payment": {
+       "amount": 1200.0,
+       "date": "2025-04-15",
+       "reservationId": "67fe7179d5c9775fb64b64cd"
+     },
+     "reservation": {
+       "id": "67fe7179d5c9775fb64b64cd",
+       "firstName": "John",
+       "lastName": "Doe",
+       "numPassengers": 2,
+       "classType": "Business",
+       "phoneNumber": "1234567890",
+       "time": "10:30:00",
+       "date": "2025-05-15",
+       "ticketNumber": "TKT123456",
+       "details": "Window seat preferred"
+     }
+   }
+
+4. Process a Payment
+   URL: /api/payments/process
+   Method: POST
+   Description: Processes a payment and creates a ticket
+   Request Body: Payment object with credit card details
+   Response: Success message with ticket and payment details
+   Sample Request:
+{
+  "reservationId": "67ff094f9410385741165817",
+  "cardHolderName": "John Doe",
+  "cardNumber": "1234567890123456",
+  "expiryDate": "12/12",
+  "cvv": "123",
+  "date": "2025-04-15",
+  "amount": 1200.0
+}
+   Sample Response:
+   {
+     "success": true,
+     "ticket": {
+       "number": "TKT123456",
+       "price": 1200.0,
+       "details": "Flight details for John Doe",
+       "reservationId": "67fe7179d5c9775fb64b64cd",
+       "paymentId": "67fe7179d5c9775fb64b65cd"
+     },
+     "payment": {
+       "id": "67fe7179d5c9775fb64b65cd",
+       "amount": 1200.0,
+       "date": "2025-04-15",
+       "reservationId": "67fe7179d5c9775fb64b64cd"
+     },
+     "message": "Payment processed successfully"
+   }
+
+
