@@ -61,6 +61,9 @@ public class ReservationController {
     // Displays the form for creating a new reservation
     @GetMapping("/reservation")
     public String showReservationForm(Model model) {
+    	//add reservation object to model
+		Reservation reservation = new Reservation();
+		model.addAttribute("reservation", reservation);
         return "reservation";
     }
 
