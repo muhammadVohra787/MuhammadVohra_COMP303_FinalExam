@@ -1,4 +1,3 @@
-```markdown
 # ✈️ Airline Reservation System - REST API Documentation
 
 This documentation outlines all available REST API endpoints for managing reservations, tickets, and payments in the Airline Reservation System.
